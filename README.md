@@ -29,9 +29,9 @@ Currently not implemented:
 
 These features may be explored and implemented gradually as the project evolves.
 
-## 🚀 Current Version **v1.0**
+## 🚀 Version 
 
-The current version focuses on establishing a stable and comfortable writing interface.
+The current version **v1.0** focuses on establishing a stable and comfortable writing interface.
 
 Hence, currently only containing stable `HTML` and `CSS` structure exists and functionality is in development
 
