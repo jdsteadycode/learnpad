@@ -22,10 +22,9 @@ Currently not implemented:
 
 * Syntax highlighting
 * Automatic code detection
-* Markdown parsing or rendering
 * Automatic code formatting
 * Note saving or file handling
-* JavaScript-based editor functionality
+
 
 These features may be explored and implemented gradually as the project evolves.
 
