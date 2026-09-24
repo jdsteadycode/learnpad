@@ -16,6 +16,11 @@
     --radius-lg: 14px;
 }
 
+/* to hide the element */
+.hidden {
+    display: none !important;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
