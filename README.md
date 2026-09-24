@@ -32,7 +32,10 @@ These features may be explored and implemented gradually as the project evolves.
 
 The current version **v1.0** focuses on establishing a stable and comfortable writing interface.
 
-Hence, currently only containing stable `HTML` and `CSS` structure exists and functionality is in development
+**UPDATE**:
+* updated `html` by adding note editor structure.
+* updated `css` by adding re-usable classes and some minimal styles for note editor output.
+* added `js` which currently allows writing raw text and viewing it right away.
 
 ---
 GitHub: **@jdsteadycode**.
