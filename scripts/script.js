@@ -1,6 +1,7 @@
 // initial data store (central place to hold data).
 const dataStore = {
     "rawText": "",
+    "generatedText": "",
 };
 
 // grab the html element(s).
