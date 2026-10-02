@@ -93,6 +93,54 @@ function toggleInput() {
     noteEditorEl.focus();
 };
 
+// () -> identify and get code block boundary details.
+/*
+* o/p: [{blockType, startPos, endPos }, {..}]
+*/
+function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
+    // when incoming data is empty?
+    if(initialSplittedArray.length == 0) return [];
+
+    // initial boundary array.
+    const boundaryArray = [];
+    
+    // initial actual detail obj.
+    let detailsObj = {};
+
+    // iterate over the array.
+    for(let i = 0; i < initialSplittedArray.length; i ++) {
+
+        // when current ith value is opening html block!
+        if(initialSplittedArray[i] === "<html>") {
+            // set the block type as html.
+            detailsObj["blockType"] = "html";
+
+            // set the starting position (index).
+            detailsObj["startPos"] = i;
+        }
+
+        // when current ith value is closing html block!
+        if(initialSplittedArray[i] === "</html>") {
+            // set the ending position (index).
+            detailsObj["endPos"] = i;
+        }
+
+        // check if current obj is constructed fully for current block?
+        if("blockType" in detailsObj && "startPos" in detailsObj && "endPos" in detailsObj) {
+
+            // push current details obj in boundary array.
+            boundaryArray.push(detailsObj);
+
+            // empty the current details obj data instantly!
+            detailsObj = {};
+        }
+    };
+    
+    // get the final boundary arr.
+    return boundaryArray;
+}
+
+
 
 // attach event to note editor input element.
 attachElementEvent(noteEditorEl, "onblur", toggleOutput);
