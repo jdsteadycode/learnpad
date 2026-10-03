@@ -14,28 +14,31 @@ is an approach to create a comfortable, usable writing space for my personal use
 * Responsive layout for small screens.
 
 
-## ⚠️ Notable Issues
-
-The current version provides the initial UI foundation only. The actual editor behavior is still under development.
-
-Currently not implemented:
-
-* Syntax highlighting
-* Automatic code detection
-* Automatic code formatting
-* Note saving or file handling
-
-
-These features may be explored and implemented gradually as the project evolves.
-
 ## 🚀 Version 
 
-The current version **v1.0** focuses on establishing a stable and comfortable writing interface.
+The current version **v1.0.0** focuses on establishing a stable and comfortable writing interface.
 
 **UPDATE**:
 * updated `html` by adding note editor structure.
 * updated `css` by adding re-usable classes and some minimal styles for note editor output.
-* added `js` which currently allows writing raw text and viewing it right away.
+* added `js` which currently allows writing raw text and viewing it right away containing `html` code block.
+* stable and minimal `html` code block highlighting.
+* minimal text wrapping for long notes.
+
+## ⚠️ Notable Issues
+
+The current version has following issues:
+
+* Mimimal UI for `html` code block.
+* Output/ View area size is minimal.
+
+## 🚧 In development
+Currently not implemented:
+
+* Code block highlighting for `JavaScript, bash` code blocks.
+* Note saving or file handling.
+
+These features may be explored and implemented gradually as the project evolves.
 
 ---
 GitHub: **@jdsteadycode**.
