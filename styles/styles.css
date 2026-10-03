@@ -21,6 +21,22 @@
     display: none !important;
 }
 
+/* for html code block */
+.html-code-block {
+    /* background: lightsteelblue; */
+    /* width: 75%; */
+    /* max-width: 200px; */
+    /* padding: 2px 0px 2px 4px; */
+    /* border-radius: 4px; */
+    /* min-width: auto; */
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: lightsteelblue;
+    padding: 4px;
+    border-radius: 4px;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -164,7 +180,8 @@ article.note-editor-output {
     font-size: 0.95rem;
     color: var(--color-text-submain);
     line-height: 1.7;
-    padding: 0.5rem;    
+    padding: 0.5rem;
+    white-space: pre-wrap; /* for preserving content white-spaces and new-line characters and wrapping text when needed! */
 }
 
 .cards-grid {
