@@ -63,12 +63,12 @@ function toggleOutput() {
     dataStore["rawText"] = noteEditorEl.value.trim();
 
     // transform the text and get structured array.
-    const notesArr = transformRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, getStructuredNoteArray);
+    const notesArr = transformRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, getStructuredArray);
     // check log.
     console.log(notesArr);
 
-    // grab the intended original raw-text from data source & update the html of output element with it..
-    noteEditorOutputEl.innerHTML = dataStore["rawText"];
+    // grab the intended original raw-text from data source & update the existing output element to build the view.
+    buildNoteView(notesArr, noteEditorOutputEl);
 
     // switch the display of noteEditor Input element off, & display of noteEditor Output element on.
     toggleElementClasses([
@@ -225,45 +225,79 @@ function updateAndGetBoundaryData(boundaryData = [], rawTextArr = []) {
 };
 
 // () -> get final structured Array of notes.
-function getStructuredNoteArray(updatedBoundaryData, array) {
-    // initial updated raw text array.
-    const updatedRawTextArray = [];
-
-    // initial starting index for boundary data.
+function getStructuredArray(boundaries = [], initialArr = []) {
+    // initial structured arr.
+    let structuredArr = [];
+    
+    // initial index for boundaries array.
     let boundaryIndex = 0;
 
-    // initial starting index for array.
-    let startingArrayIndex = 0;
+    // initial index for initial array.
+    let arrayIndex = 0;
 
-    // until boundary data's end is reached!
-    while(boundaryIndex < updatedBoundaryData.length) {
+
+    // until index is reaches initial array's length.
+    while(arrayIndex < initialArr.length) {
 
         // check log.
-        // console.log(updatedBoundaryData[boundaryIndex]);
-        // console.log(array.slice(startingArrayIndex, updatedBoundaryData[boundaryIndex]["startPos"]).join(" "));
-        // console.log(startingArrayIndex, updatedBoundaryData[boundaryIndex]["startPos"]);
+        //console.log(initialArr[arrayIndex]);
+        //console.log(boundaries[boundaryIndex]["startPos"], boundaries[boundaryIndex]["codeBlockString"]);
 
-        // prepare the normal raw string.
-        let rawString = array.slice(startingArrayIndex, updatedBoundaryData[boundaryIndex]["startPos"]).join(" ");
+        // when boundaryIndex ain't reached end of boundaries array.
+        if(boundaryIndex < boundaries.length) {
 
-        // push the raw string and then code block string into array.
-        updatedRawTextArray.push(rawString, updatedBoundaryData[boundaryIndex]["codeBlockString"]);
+            // when current arrayindex matches the current boundary data's starting index.
+            if(arrayIndex === boundaries[boundaryIndex]["startPos"]) {
 
-        // instantly, update the starting array index as of end position + 1 of boundary data.
-        startingArrayIndex = updatedBoundaryData[boundaryIndex]["endPos"]+1;
+                // check log.
+                // console.log(initialArr[arrayIndex]);
+                // console.log(boundaries[boundaryIndex]["codeBlockString"]);
 
-        // update and increment the boundary index.
-        boundaryIndex++;
-    };
+                // push the current code block string into structured array.
+                structuredArr.push(boundaries[boundaryIndex]["codeBlockString"]);
+
+                // update the current array index as of the endPos + 1.
+                arrayIndex = boundaries[boundaryIndex]["endPos"]+1;
+    
+                // then, hence update the boundary index.
+                boundaryIndex++;
+
+                // check log the updated indexes
+                // console.log(arrayIndex);
+                // console.log(boundaryIndex);
+
+                // continue.
+                continue;
+            }
+        }
+
+        // check log the initial array element.
+        // console.log(initialArr[arrayIndex]);
+
+        // push current array's normal element into structured array.
+        structuredArr.push(initialArr[arrayIndex]);
+
+        // update and increment the arrayIndex
+        arrayIndex++;
+    }
 
     // check log**
-    console.log(updatedRawTextArray);
-};
+    // console.log(structuredArr);
+
+    // get this final structured array.
+    return structuredArr;
+}
 
 // () -> build the view.
 function buildNoteView(notesStructure = [], existingEl) {
-  // when incoming array is empty?
-  if (notesStructure.length == 0) return [];
+  // when incoming array is un-available or empty!
+  if (! notesStructure || notesStructure.length == 0) {
+    return null;
+  }
+
+  // empty the existing element content.
+  // console.log(existingEl.innerHTML);
+  existingEl.innerHTML = "";
 
   // iterate over the notes array structure.
   for(let i = 0; i < notesStructure.length; i ++) {
