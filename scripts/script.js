@@ -314,7 +314,10 @@ function generateStructuredArray(boundaries = [], initialArr = []) {
     return structuredArr;
 }
 
-// () -> build the view.
+// () -> build the clear reading view for notes written.
+/*
+* i.e., either null or build the UI systematically from proper notes structure for existing element.
+*/
 function buildNoteView(notesStructure = [], existingEl) {
   // when incoming array is un-available or empty!
   if (! notesStructure || notesStructure.length == 0) {
