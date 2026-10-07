@@ -55,6 +55,11 @@ function attachElementEvent(element, event, callback) {
 };
 
 // () -> to toggle output.
+/*
+* Transition from input mode -> output mode.
+i/p: textarea view
+o/p: article reading view
+*/
 function toggleOutput() {
     // check log.
     // console.log("Toggle Output!");
@@ -94,6 +99,11 @@ function toggleOutput() {
 };
 
 // () -> to toggle input.
+/*
+* Transition from output mode -> input mode.
+i/p: textarea view
+o/p: article reading view
+*/
 function toggleInput() {
     // check log.
     // console.log("Toggle Input!");
