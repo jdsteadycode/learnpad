@@ -55,6 +55,11 @@ function attachElementEvent(element, event, callback) {
 };
 
 // () -> to toggle output.
+/*
+* Transition from input mode -> output mode.
+i/p: textarea view
+o/p: article reading view
+*/
 function toggleOutput() {
     // check log.
     // console.log("Toggle Output!");
@@ -62,13 +67,26 @@ function toggleOutput() {
     // save and store the existing input element value to data store's rawText.
     dataStore["rawText"] = noteEditorEl.value.trim();
 
-    // transform the text and get structured array.
-    const notesArr = transformRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, getStructuredArray);
+    // get the outcome after parsing of raw text to various steps.
+    const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, generateUpdatedBoundaries, generateStructuredArray);
+
+    // when error
+    if(result["error"]){
+        // simply show the error in console.
+        console.error(result["error"]);
+    }
+    // otherwise proceed with parsed structure array!
+    else {
+        // save to dataStore as single source of truth.
+        dataStore.generatedNotesArr = result["data"] ?? [];
+    }
+
+
     // check log.
-    console.log(notesArr);
+    console.log(dataStore.generatedNotesArr);
 
     // grab the intended original raw-text from data source & update the existing output element to build the view.
-    buildNoteView(notesArr, noteEditorOutputEl);
+    buildNoteView(dataStore.generatedNotesArr, noteEditorOutputEl);
 
     // switch the display of noteEditor Input element off, & display of noteEditor Output element on.
     toggleElementClasses([
@@ -81,6 +99,11 @@ function toggleOutput() {
 };
 
 // () -> to toggle input.
+/*
+* Transition from output mode -> input mode.
+i/p: textarea view
+o/p: article reading view
+*/
 function toggleInput() {
     // check log.
     // console.log("Toggle Input!");
@@ -145,15 +168,18 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
     return boundaryArray;
 }
 
-// () -> transform the raw text.
-function transformRawText(rawTextInput, identifierCallback, getNewLineStrCallback, boundaryDataUpdaterCallback, getStructuredArrCallback) {
+// () -> parse the raw notes text and do processing and structure it and get it in final result
+/*
+* o/p: either {"error": "message"} or {"data": [..]}
+*/
+function parseRawText(rawTextInput, identifierCallback, getNewLineStrCallback, boundaryDataUpdaterCallback, getStructuredArrCallback) {
   // when inputs are not provided properly?
-  if (!rawTextInput || !identifierCallback) {
-    return null;
+  if (! rawTextInput || ! identifierCallback || ! getNewLineStrCallback || ! boundaryDataUpdaterCallback || ! getStructuredArrCallback) {
+    return {"error": "Inputs are not provided properly or missing!"};
   }
   // when type of inputs are invalid?
-  else if (typeof (rawTextInput) !== "string" && typeof (identifierCallback) !== "function") {
-    return null;
+  else if (typeof (rawTextInput) !== "string" || typeof (identifierCallback) !== "function" || typeof (getNewLineStrCallback) !== "function" || typeof(boundaryDataUpdaterCallback) !== "function" || typeof(getStructuredArrCallback) !== "function") {
+    return {"error": "One or more inputs provided have invalid input type!"};
   }
 
   // otherwise, proceed further..
@@ -175,9 +201,9 @@ function transformRawText(rawTextInput, identifierCallback, getNewLineStrCallbac
   const updatedBoundaries = boundaryDataUpdaterCallback(boundaries, initialRawTextArr);
   // console.log(updatedBoundaries);
 
-  // get initial notes structured array.
-  const notesStructureArr = getStructuredArrCallback(updatedBoundaries, initialRawTextArr);
-  return notesStructureArr;
+  // get initial notes structured array and return in proper format. i.e., {"data": []} etc.
+  const structuredNotesArr = getStructuredArrCallback(updatedBoundaries, initialRawTextArr);
+  return {"data": structuredNotesArr};
 }
 
 // () -> get new line added string.
@@ -195,8 +221,8 @@ function getNewLineStr(value, index, array) {
   }
 };
 
-// () -> get updated boundary data with merged code strings.
-function updateAndGetBoundaryData(boundaryData = [], rawTextArr = []) {
+// () -> generate fresh updated boundaries data with merged code strings.
+function generateUpdatedBoundaries(boundaryData = [], rawTextArr = []) {
 
     // when incoming array are empty?
     if (boundaryData.length == 0 || rawTextArr.length == 0) return [];
@@ -224,8 +250,8 @@ function updateAndGetBoundaryData(boundaryData = [], rawTextArr = []) {
     return data;
 };
 
-// () -> get final structured Array of notes.
-function getStructuredArray(boundaries = [], initialArr = []) {
+// () -> generate final structured Array of notes.
+function generateStructuredArray(boundaries = [], initialArr = []) {
     // initial structured arr.
     let structuredArr = [];
     
@@ -288,7 +314,10 @@ function getStructuredArray(boundaries = [], initialArr = []) {
     return structuredArr;
 }
 
-// () -> build the view.
+// () -> build the clear reading view for notes written.
+/*
+* i.e., either null or build the UI systematically from proper notes structure for existing element.
+*/
 function buildNoteView(notesStructure = [], existingEl) {
   // when incoming array is un-available or empty!
   if (! notesStructure || notesStructure.length == 0) {
