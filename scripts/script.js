@@ -63,7 +63,7 @@ function toggleOutput() {
     dataStore["rawText"] = noteEditorEl.value.trim();
 
     // get the outcome after parsing of raw text to various steps.
-    const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, generateStructuredArray);
+    const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, generateUpdatedBoundaries, generateStructuredArray);
 
     // when error
     if(result["error"]){
@@ -211,8 +211,8 @@ function getNewLineStr(value, index, array) {
   }
 };
 
-// () -> get updated boundary data with merged code strings.
-function updateAndGetBoundaryData(boundaryData = [], rawTextArr = []) {
+// () -> generate fresh updated boundaries data with merged code strings.
+function generateUpdatedBoundaries(boundaryData = [], rawTextArr = []) {
 
     // when incoming array are empty?
     if (boundaryData.length == 0 || rawTextArr.length == 0) return [];
