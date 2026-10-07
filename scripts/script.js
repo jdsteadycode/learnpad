@@ -63,7 +63,7 @@ function toggleOutput() {
     dataStore["rawText"] = noteEditorEl.value.trim();
 
     // get the outcome after parsing of raw text to various steps.
-    const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, getStructuredArray);
+    const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, updateAndGetBoundaryData, generateStructuredArray);
 
     // when error
     if(result["error"]){
@@ -240,8 +240,8 @@ function updateAndGetBoundaryData(boundaryData = [], rawTextArr = []) {
     return data;
 };
 
-// () -> get final structured Array of notes.
-function getStructuredArray(boundaries = [], initialArr = []) {
+// () -> generate final structured Array of notes.
+function generateStructuredArray(boundaries = [], initialArr = []) {
     // initial structured arr.
     let structuredArr = [];
     
