@@ -131,14 +131,14 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
 
     // initial boundary array.
     const boundaryArray = [];
-    
+
     // initial actual detail obj.
     let detailsObj = {};
 
     // iterate over the array.
     for(let i = 0; i < initialSplittedArray.length; i ++) {
 
-        // when current ith value is opening html block!
+        // when current ith value is opening html tag?
         if(initialSplittedArray[i] === "<html>") {
             // set the block type as html.
             detailsObj["blockType"] = "html";
@@ -147,8 +147,23 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj["startPos"] = i;
         }
 
-        // when current ith value is closing html block!
+        // when current ith value is closing html tag?
         if(initialSplittedArray[i] === "</html>") {
+            // set the ending position (index).
+            detailsObj["endPos"] = i;
+        }
+
+        // when current ith value is opening script or js tag?
+        if(initialSplittedArray[i] === "<script>" || initialSplittedArray[i] === "\x3Cscript>") {
+            // set the block type as js.
+            detailsObj["blockType"] = "js";
+
+            // set the starting position (index).
+            detailsObj["startPos"] = i;
+        }
+
+        // when current ith value is closing js tag?
+        if(initialSplittedArray[i] === ("<" + "/" + "script>") || initialSplittedArray[i] === "\x3C/script>") {
             // set the ending position (index).
             detailsObj["endPos"] = i;
         }
@@ -163,7 +178,7 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj = {};
         }
     };
-    
+
     // get the final boundary arr.
     return boundaryArray;
 }
@@ -318,9 +333,9 @@ function generateStructuredArray(boundaries = [], initialArr = []) {
 /*
 * i.e., either null or build the UI systematically from proper notes structure for existing element.
 */
-function buildNoteView(notesStructure = [], existingEl) {
+function buildNoteView(notesStructure = [], existingEl = null) {
   // when incoming array is un-available or empty!
-  if (! notesStructure || notesStructure.length == 0) {
+  if (! notesStructure || notesStructure.length == 0 || ! existingEl) {
     return null;
   }
 
@@ -331,7 +346,7 @@ function buildNoteView(notesStructure = [], existingEl) {
   // iterate over the notes array structure.
   for(let i = 0; i < notesStructure.length; i ++) {
 
-      // when current element is code block.
+      // when current element is an html code block.
       if(notesStructure[i].startsWith("<html>") && (notesStructure[i].endsWith("</html>\n") || notesStructure[i].endsWith("</html>"))) {
           // console.log("code block", notesStructure[i]);
 
@@ -347,6 +362,23 @@ function buildNoteView(notesStructure = [], existingEl) {
           // finally, append this pre element into existing element.
           existingEl.insertAdjacentElement("beforeend", preEl);
       }
+
+       // when current element is js code block
+       else if((notesStructure[i].startsWith("<script>") || notesStructure[i].startsWith("\x3Cscript>")) && (notesStructure[i].endsWith(("<" + "/" + "script>\n")) || notesStructure[i].endsWith(("<" + "/" + "script>")) || notesStructure[i].endsWith("\x3C/script>") || notesStructure[i].endsWith("\x3C/script>\n"))) {
+          // console.log("code block", notesStructure[i]);
+
+          // build one pre element for code block.
+          let preEl = document.createElement("pre");
+
+          // add class attribute.
+          preEl.setAttribute("class", "js-code-block");
+
+          // add the current js code string as inner text of it.
+          preEl.innerText = notesStructure[i];
+
+          // finally, append this pre element into existing element.
+          existingEl.insertAdjacentElement("beforeend", preEl);
+      }
       // otherwise a normal raw note string.
       else {
           // console.log("a normal raw note string", notesStructure[i]);
@@ -355,8 +387,6 @@ function buildNoteView(notesStructure = [], existingEl) {
       }
   }
 };
-
-
 
 // attach event to note editor input element.
 attachElementEvent(noteEditorEl, "onblur", toggleOutput);
