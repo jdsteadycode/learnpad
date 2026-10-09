@@ -15,6 +15,7 @@
     --radius-md: 10px;
     --radius-lg: 14px;
     --html-code-block-color-bg: seashell;
+    --js-code-block-color-bg: mistyrose;
 }
 
 /* to hide the element */
@@ -34,6 +35,23 @@
     max-width: 100%;
     overflow-x: auto;
     background-color: var(--html-code-block-color-bg);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
+    padding: 4px;
+    border-radius: 4px;
+}
+
+/* for js code block */
+.js-code-block {
+    /* background: lightsteelblue; */
+    /* width: 75%; */
+    /* max-width: 200px; */
+    /* padding: 2px 0px 2px 4px; */
+    /* border-radius: 4px; */
+    /* min-width: auto; */
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    background-color: var(--js-code-block-color-bg);
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
     padding: 4px;
     border-radius: 4px;
