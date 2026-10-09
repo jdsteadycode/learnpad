@@ -131,14 +131,14 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
 
     // initial boundary array.
     const boundaryArray = [];
-    
+
     // initial actual detail obj.
     let detailsObj = {};
 
     // iterate over the array.
     for(let i = 0; i < initialSplittedArray.length; i ++) {
 
-        // when current ith value is opening html block!
+        // when current ith value is opening html tag?
         if(initialSplittedArray[i] === "<html>") {
             // set the block type as html.
             detailsObj["blockType"] = "html";
@@ -147,8 +147,23 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj["startPos"] = i;
         }
 
-        // when current ith value is closing html block!
+        // when current ith value is closing html tag?
         if(initialSplittedArray[i] === "</html>") {
+            // set the ending position (index).
+            detailsObj["endPos"] = i;
+        }
+
+        // when current ith value is opening script or js tag?
+        if(initialSplittedArray[i] === "<script>" || initialSplittedArray[i] === "\x3Cscript>") {
+            // set the block type as js.
+            detailsObj["blockType"] = "js";
+
+            // set the starting position (index).
+            detailsObj["startPos"] = i;
+        }
+
+        // when current ith value is closing js tag?
+        if(initialSplittedArray[i] === ("<" + "/" + "script>") || initialSplittedArray[i] === "\x3C/script>") {
             // set the ending position (index).
             detailsObj["endPos"] = i;
         }
@@ -163,7 +178,7 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj = {};
         }
     };
-    
+
     // get the final boundary arr.
     return boundaryArray;
 }
@@ -355,8 +370,6 @@ function buildNoteView(notesStructure = [], existingEl) {
       }
   }
 };
-
-
 
 // attach event to note editor input element.
 attachElementEvent(noteEditorEl, "onblur", toggleOutput);
