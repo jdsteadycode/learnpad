@@ -184,6 +184,7 @@ article.note-editor-output {
     line-height: 1.7;
     padding: 0.5rem;
     white-space: pre-wrap; /* for preserving content white-spaces and new-line characters and wrapping text when needed! */
+    overflow-y: auto;   /* for ensuring flexiblity while reading the notes content */
 }
 
 .cards-grid {
