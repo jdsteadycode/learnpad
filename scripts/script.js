@@ -347,7 +347,7 @@ function buildNoteView(notesStructure = [], existingEl = null) {
   for(let i = 0; i < notesStructure.length; i ++) {
 
       // when current element is an html code block.
-      if(notesStructure[i].startsWith("<html>") && (notesStructure[i].endsWith("</html>\n") || notesStructure[i].endsWith("</html>"))) {
+      if(isCodeBlock(notesStructure[i], "html")) {
           // console.log("code block", notesStructure[i]);
 
           // build one pre element for code block.
@@ -364,7 +364,7 @@ function buildNoteView(notesStructure = [], existingEl = null) {
       }
 
        // when current element is js code block
-       else if((notesStructure[i].startsWith("<script>") || notesStructure[i].startsWith("\x3Cscript>")) && (notesStructure[i].endsWith(("<" + "/" + "script>\n")) || notesStructure[i].endsWith(("<" + "/" + "script>")) || notesStructure[i].endsWith("\x3C/script>") || notesStructure[i].endsWith("\x3C/script>\n"))) {
+       else if(isCodeBlock(notesStructure[i], "js")) {
           // console.log("code block", notesStructure[i]);
 
           // build one pre element for code block.
@@ -386,6 +386,35 @@ function buildNoteView(notesStructure = [], existingEl = null) {
           existingEl.insertAdjacentText("beforeend", notesStructure[i]);
       }
   }
+};
+
+// () -> is a code block!
+/*
+* i/p: param1: value (current element or value) [string], param2: toCheck: representation of code block to check! (html | js | any) [string]
+* o/p: true | false
+**/
+function isCodeBlock(value, toCheck = "") {
+  // when incoming parameter inputs are invalid.
+  if (! value || toCheck === "") return false;
+
+  // using switch case approach...
+  switch (toCheck) {
+
+    // for html case!
+    case "html":
+      if (value.startsWith("<html>") && (value.endsWith("</html>\n") || value.endsWith("</html>"))) return true;
+      break;
+
+    // for js case!
+    case "js":
+      if ((value.startsWith("<script>") || value.startsWith("\x3Cscript>")) && (value.endsWith(("<" + "/" + "script>\n")) || value.endsWith(("<" + "/" + "script>")) || value.endsWith("\x3C/script>") || value.endsWith("\x3C/script>\n"))) return true;
+      break;
+
+    // default case!
+    default:
+      break;
+  };
+  return false;
 };
 
 // attach event to note editor input element.
