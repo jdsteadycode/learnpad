@@ -347,34 +347,23 @@ function buildNoteView(notesStructure = [], existingEl = null) {
   for(let i = 0; i < notesStructure.length; i ++) {
 
       // when current element is an html code block.
-      if(notesStructure[i].startsWith("<html>") && (notesStructure[i].endsWith("</html>\n") || notesStructure[i].endsWith("</html>"))) {
+      if(isCodeBlock(notesStructure[i], "html")) {
           // console.log("code block", notesStructure[i]);
 
-          // build one pre element for code block.
-          let preEl = document.createElement("pre");
-
-          // add class attribute.
-          preEl.setAttribute("class", "html-code-block");
-
-          // add the current html code string as inner text of it.
-          preEl.innerText = notesStructure[i];
+          // build one pre element for code block with intended attributes.
+          let preEl = generateElementWithAttributes("pre", [{"attribute": "class", "value": "html-code-block", "type": "attribute"}, {"attribute": "innerText", "value": notesStructure[i], "type": "property"}]);
 
           // finally, append this pre element into existing element.
           existingEl.insertAdjacentElement("beforeend", preEl);
       }
 
        // when current element is js code block
-       else if((notesStructure[i].startsWith("<script>") || notesStructure[i].startsWith("\x3Cscript>")) && (notesStructure[i].endsWith(("<" + "/" + "script>\n")) || notesStructure[i].endsWith(("<" + "/" + "script>")) || notesStructure[i].endsWith("\x3C/script>") || notesStructure[i].endsWith("\x3C/script>\n"))) {
+       else if(isCodeBlock(notesStructure[i], "js")) {
           // console.log("code block", notesStructure[i]);
 
-          // build one pre element for code block.
-          let preEl = document.createElement("pre");
+          // build one pre element for code block with intended attributes.
+          let preEl = generateElementWithAttributes("pre", [{"attribute": "class", "value": "js-code-block", "type": "attribute"}, {"attribute": "innerText", "value": notesStructure[i], "type": "property"}]);
 
-          // add class attribute.
-          preEl.setAttribute("class", "js-code-block");
-
-          // add the current js code string as inner text of it.
-          preEl.innerText = notesStructure[i];
 
           // finally, append this pre element into existing element.
           existingEl.insertAdjacentElement("beforeend", preEl);
@@ -387,6 +376,87 @@ function buildNoteView(notesStructure = [], existingEl = null) {
       }
   }
 };
+
+// () -> is a code block!
+/*
+* i/p: param1: value (current element or value) [string], param2: toCheck: representation of code block to check! (html | js | any) [string]
+* o/p: true | false
+**/
+function isCodeBlock(value, toCheck = "") {
+  // when incoming parameter inputs are invalid.
+  if (! value || toCheck === "") return false;
+
+  // using switch case approach...
+  switch (toCheck) {
+
+    // for html case!
+    case "html":
+      if (value.startsWith("<html>") && (value.endsWith("</html>\n") || value.endsWith("</html>"))) return true;
+      break;
+
+    // for js case!
+    case "js":
+      if ((value.startsWith("<script>") || value.startsWith("\x3Cscript>")) && (value.endsWith(("<" + "/" + "script>\n")) || value.endsWith(("<" + "/" + "script>")) || value.endsWith("\x3C/script>") || value.endsWith("\x3C/script>\n"))) return true;
+      break;
+
+    // default case!
+    default:
+      break;
+  };
+  return false;
+};
+
+// () -> generate an html element with attributes.
+/*
+* i/p: (element, [{"attribute": attribute, "value": value, "type": attribute | event handler | dom-property | boolean }])
+i.e., types:-
+1. attribute: standard attributes like class, href, rel etc.
+2. event handlers: like onmouseenter, onblur, onclick, ondoubleclick etc.
+3. dom-property: like innerText, textContent, outerHTML, innerHTML etc.
+4. boolean: like checked, disabled, readonly etc.
+
+**note**: if passing event then, value for handler should be existing function not string!
+
+o/p: null | element
+**/
+function generateElementWithAttributes(element, array) {
+    // when inputs ain't proper.
+    if(! element || typeof(element) !== "string" || ! Array.isArray(array) || array.length == 0) return null;
+
+    // create the initial element.
+    const elem  = document.createElement(element);
+
+    // iterate the content array to set the stuff.
+    for(let i = 0; i < array.length; i ++) {
+
+        // when type is normal attribute or its boolean
+        if(array[i]["type"] === "attribute" || array[i]["type"] === "boolean") {
+
+            // set the attribute content.
+            elem.setAttribute(array[i]["attribute"], array[i]["value"]);
+        }
+        // or when type is event handler
+        else if(array[i]["type"] === "eventHdr") {
+
+            // set the event and attach the content.
+            elem[("on" + array[i]["attribute"])] = array[i]["value"];
+        }
+        // or when it's dom property
+        else if(array[i]["type"] === "property") {
+
+            // set the event handler and attach the content.
+            elem[array[i]["attribute"]] = array[i]["value"];
+        }
+
+        // othewise do nothing...
+        else {
+        }
+    }
+
+    // at the end return the generated element.
+    return elem;
+};
+
 
 // attach event to note editor input element.
 attachElementEvent(noteEditorEl, "onblur", toggleOutput);
