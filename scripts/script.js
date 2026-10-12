@@ -83,7 +83,7 @@ function toggleOutput() {
 
 
     // check log.
-    console.log(dataStore.generatedNotesArr);
+    // console.log(dataStore.generatedNotesArr);
 
     // grab the intended original raw-text from data source & update the existing output element to build the view.
     buildNoteView(dataStore.generatedNotesArr, noteEditorOutputEl);
@@ -217,6 +217,8 @@ function parseRawText(rawTextInput, identifierCallback, getNewLineStrCallback, b
 
   // split the rawTextInput via `\n` chars.
   const rawTextArr = rawTextInput.split("\n");
+  // check log**
+  // console.log(rawTextArr);
 
   // get the block boundaries.
   const boundaries = identifierCallback(rawTextArr);
@@ -396,13 +398,13 @@ function buildNoteView(notesStructure = [], existingEl = null) {
          let value = "";
          // when output content contains closing tag + \n
          if(outputContent.includes("</output>\n")) {
-             console.log("closing tag with new line");
-             value += outputContent.replace("</output>\n", "");
+            // console.log("closing tag with new line");
+            value += outputContent.replace("</output>\n", "");
          }
          // or if it only contains
          else {
-             console.log("just closing tag");
-             value += outputContent.replace("</output>", "");
+            // console.log("just closing tag");
+            value += outputContent.replace("</output>", "");
          }
 
           // build one pre element for code block with intended attributes.
