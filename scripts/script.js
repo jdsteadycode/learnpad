@@ -384,6 +384,33 @@ function buildNoteView(notesStructure = [], existingEl = null) {
           // finally, append this pre element into existing element.
           existingEl.insertAdjacentElement("beforeend", preEl);
       }
+           
+      // when current element is output code block
+       else if(isCodeBlock(notesStructure[i], "output")) {
+          // console.log("code block", notesStructure[i]);
+
+         // prepared value for output content i.e., excluding opening tag!
+         let outputContent = notesStructure[i].replace("<output>", "");
+
+         // initial value
+         let value = "";
+         // when output content contains closing tag + \n
+         if(outputContent.includes("</output>\n")) {
+             console.log("closing tag with new line");
+             value += outputContent.replace("</output>\n", "");
+         }
+         // or if it only contains
+         else {
+             console.log("just closing tag");
+             value += outputContent.replace("</output>", "");
+         }
+
+          // build one pre element for code block with intended attributes.
+          let preEl = generateElementWithAttributes("pre", [{"attribute": "class", "value": "output-code-block", "type": "attribute"}, {"attribute": "innerText", "value": ("o/p:" + value), "type": "property"}]);
+
+          // finally, append this pre element into existing element.
+          existingEl.insertAdjacentElement("beforeend", preEl);
+      }     
       // otherwise a normal raw note string.
       else {
           // console.log("a normal raw note string", notesStructure[i]);
