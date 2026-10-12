@@ -16,26 +16,26 @@ is an approach to create a comfortable, usable writing space for my personal use
 
 ## 🚀 Version 
 
-The current version **v1.0.1** focuses on establishing a stable and comfortable writing interface.
+The current version **v1.0.2** focuses on establishing a stable and comfortable writing interface.
 
 **UPDATE**:
 * updated `html` by adding note editor structure.
 * updated `css` by adding re-usable classes and some minimal styles for note editor output.
 * added `js` which currently allows writing raw text and viewing it right away containing `html, js` code block highlighting.
-* stable and minimal `html, js` code block highlighting.
+* stable and minimal `html, js, output` code block(s) highlighting.
 * minimal text wrapping for long notes.
 
 ## ⚠️ Notable Issues
 
 The current version has following issues:
 
-* Mimimal UI for `html, js` code block highlighting.
+* Mimimal UI for `html, js, output` code block highlighting.
 * Output/ View area size is minimal.
 
 ## 🚧 In development
 Currently not implemented:
 
-* Code block highlighting for `bash | output | console` code blocks.
+* Code block highlighting for `input` code block (which can be bash / terminal / console instructions).
 * Note saving or file handling.
 
 These features may be explored and implemented gradually as the project evolves.
