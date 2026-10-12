@@ -415,6 +415,11 @@ function isCodeBlock(value, toCheck = "") {
       if ((value.startsWith("<script>") || value.startsWith("\x3Cscript>")) && (value.endsWith(("<" + "/" + "script>\n")) || value.endsWith(("<" + "/" + "script>")) || value.endsWith("\x3C/script>") || value.endsWith("\x3C/script>\n"))) return true;
       break;
 
+    // for output case!
+    case "output":
+      if (value.startsWith("<output>") && (value.endsWith("</output>\n") || value.endsWith("</output>"))) return true;
+      break;
+
     // default case!
     default:
       break;
