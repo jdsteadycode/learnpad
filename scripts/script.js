@@ -83,7 +83,7 @@ function toggleOutput() {
 
 
     // check log.
-    console.log(dataStore.generatedNotesArr);
+    // console.log(dataStore.generatedNotesArr);
 
     // grab the intended original raw-text from data source & update the existing output element to build the view.
     buildNoteView(dataStore.generatedNotesArr, noteEditorOutputEl);
@@ -168,6 +168,22 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj["endPos"] = i;
         }
 
+        // when current ith value is opening output tag?
+        if (initialSplittedArray[i] === "<output>") {
+          // set the block type as output.
+          detailsObj["blockType"] = "output";
+
+          // set the starting position (index).
+          detailsObj["startPos"] = i;
+        }
+
+        // when current ith value is closing output tag?
+        if (initialSplittedArray[i] === "</output>") {
+
+          // set the starting position (index).
+          detailsObj["endPos"] = i;
+        }
+
         // check if current obj is constructed fully for current block?
         if("blockType" in detailsObj && "startPos" in detailsObj && "endPos" in detailsObj) {
 
@@ -201,6 +217,8 @@ function parseRawText(rawTextInput, identifierCallback, getNewLineStrCallback, b
 
   // split the rawTextInput via `\n` chars.
   const rawTextArr = rawTextInput.split("\n");
+  // check log**
+  // console.log(rawTextArr);
 
   // get the block boundaries.
   const boundaries = identifierCallback(rawTextArr);
@@ -368,6 +386,33 @@ function buildNoteView(notesStructure = [], existingEl = null) {
           // finally, append this pre element into existing element.
           existingEl.insertAdjacentElement("beforeend", preEl);
       }
+           
+      // when current element is output code block
+       else if(isCodeBlock(notesStructure[i], "output")) {
+          // console.log("code block", notesStructure[i]);
+
+         // prepared value for output content i.e., excluding opening tag!
+         let outputContent = notesStructure[i].replace("<output>", "");
+
+         // initial value
+         let value = "";
+         // when output content contains closing tag + \n
+         if(outputContent.includes("</output>\n")) {
+            // console.log("closing tag with new line");
+            value += outputContent.replace("</output>\n", "");
+         }
+         // or if it only contains
+         else {
+            // console.log("just closing tag");
+            value += outputContent.replace("</output>", "");
+         }
+
+          // build one pre element for code block with intended attributes.
+          let preEl = generateElementWithAttributes("pre", [{"attribute": "class", "value": "output-code-block", "type": "attribute"}, {"attribute": "innerText", "value": ("o/p:" + value), "type": "property"}]);
+
+          // finally, append this pre element into existing element.
+          existingEl.insertAdjacentElement("beforeend", preEl);
+      }     
       // otherwise a normal raw note string.
       else {
           // console.log("a normal raw note string", notesStructure[i]);
@@ -397,6 +442,11 @@ function isCodeBlock(value, toCheck = "") {
     // for js case!
     case "js":
       if ((value.startsWith("<script>") || value.startsWith("\x3Cscript>")) && (value.endsWith(("<" + "/" + "script>\n")) || value.endsWith(("<" + "/" + "script>")) || value.endsWith("\x3C/script>") || value.endsWith("\x3C/script>\n"))) return true;
+      break;
+
+    // for output case!
+    case "output":
+      if (value.startsWith("<output>") && (value.endsWith("</output>\n") || value.endsWith("</output>"))) return true;
       break;
 
     // default case!
