@@ -168,6 +168,22 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
             detailsObj["endPos"] = i;
         }
 
+        // when current ith value is opening output tag?
+        if (initialSplittedArray[i] === "<output>") {
+          // set the block type as output.
+          detailsObj["blockType"] = "output";
+
+          // set the starting position (index).
+          detailsObj["startPos"] = i;
+        }
+
+        // when current ith value is closing output tag?
+        if (initialSplittedArray[i] === "</output>") {
+
+          // set the starting position (index).
+          detailsObj["endPos"] = i;
+        }
+
         // check if current obj is constructed fully for current block?
         if("blockType" in detailsObj && "startPos" in detailsObj && "endPos" in detailsObj) {
 
