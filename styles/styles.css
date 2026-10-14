@@ -14,8 +14,24 @@
     --shadow-focus: 0 0 0 3px rgba(13, 148, 136, 0.15);
     --radius-md: 10px;
     --radius-lg: 14px;
-    --html-code-block-color-bg: seashell;
-    --js-code-block-color-bg: mistyrose;
+    
+    /**
+    * Code block base styles
+    */
+    --html-block-bg: #f0f4ff;
+    --html-block-border: #c7d2fe;
+    --html-header-bg: #e0e7ff;
+    --html-hover-bg: rgba(240, 244, 255, 0.82);
+
+    --js-block-bg: #fffbeb;
+    --js-block-border: #fde68a;
+    --js-header-bg: #fef3c7;
+    --js-hover-bg: rgba(255, 251, 235, 0.82);
+
+    --output-block-bg: #f0fdfa;
+    --output-block-border: #99f6e4;
+    --output-header-bg: #ccfbf1;
+    --output-hover-bg: rgba(240, 253, 250, 0.82);
 }
 
 /* to hide the element */
@@ -23,38 +39,102 @@
     display: none !important;
 }
 
-/* for html code block */
-.html-code-block {
-    /* background: lightsteelblue; */
-    /* width: 75%; */
-    /* max-width: 200px; */
-    /* padding: 2px 0px 2px 4px; */
-    /* border-radius: 4px; */
-    /* min-width: auto; */
+
+/* Shared container — sizing behavior lives on the content pre */
+.code-block-container {
+    /* display: inline-block; */
     width: max-content;
     max-width: 100%;
-    overflow-x: auto;
-    background-color: var(--html-code-block-color-bg);
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
-    padding: 4px;
-    border-radius: 4px;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-subtle);
+    border: 1px solid transparent;
+    vertical-align: top;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
 }
 
-/* for js code block */
-.js-code-block {
-    /* background: lightsteelblue; */
-    /* width: 75%; */
-    /* max-width: 200px; */
-    /* padding: 2px 0px 2px 4px; */
-    /* border-radius: 4px; */
-    /* min-width: auto; */
+.code-block-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(6px) saturate(1.15);
+    -webkit-backdrop-filter: blur(6px) saturate(1.15);
+}
+
+.code-block-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    user-select: none;
+}
+
+.code-block-emoji {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.code-block-type {
+    color: var(--color-text-submain);
+}
+
+/* Content preserves the original sizing + overflow rules */
+.code-block-content {
     width: max-content;
     max-width: 100%;
     overflow-x: auto;
-    background-color: var(--js-code-block-color-bg);
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
-    padding: 4px;
-    border-radius: 4px;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-text-main);
+    background: transparent;
+    white-space: pre;
+    tab-size: 2;
+}
+
+/* HTML Code Block */
+.html-code-block {
+    background-color: var(--html-block-bg);
+    border-color: var(--html-block-border);
+}
+.html-code-block .code-block-header {
+    background-color: var(--html-header-bg);
+}
+.html-code-block:hover {
+    background-color: var(--html-hover-bg);
+    border-color: #a5b4fc;
+}
+
+/* JavaScript Code Block */
+.js-code-block {
+    background-color: var(--js-block-bg);
+    border-color: var(--js-block-border);
+}
+.js-code-block .code-block-header {
+    background-color: var(--js-header-bg);
+}
+.js-code-block:hover {
+    background-color: var(--js-hover-bg);
+    border-color: #fbbf24;
+}
+
+/* Output Code Block */
+.output-code-block {
+    background-color: var(--output-block-bg);
+    border-color: var(--output-block-border);
+}
+.output-code-block .code-block-header {
+    background-color: var(--output-header-bg);
+}
+.output-code-block:hover {
+    background-color: var(--output-hover-bg);
+    border-color: #5eead4;
 }
 
 * {
