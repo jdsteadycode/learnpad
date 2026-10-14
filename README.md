@@ -30,7 +30,7 @@ The current version **v1.0.3** focuses on establishing a stable and comfortable 
 The current version has following issues:
 
 * Output/ View area size is a bit small and compact.
-* No dedicated `syntax highlighting` for each code block content.
+* No dedicated `syntax-highlighting` for each code block content.
 
 ## 🚧 In development
 Currently not implemented:
