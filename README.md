@@ -16,7 +16,7 @@ is an approach to create a comfortable, usable writing space for my personal use
 
 ## 🚀 Version 
 
-The current version **v1.0.3** focuses on establishing a stable and comfortable writing interface.
+The current version **v1.0.4** focuses on establishing a stable and comfortable writing interface.
 
 **UPDATE**:
 * updated `html code` by adding note editor structure.
@@ -24,12 +24,12 @@ The current version **v1.0.3** focuses on establishing a stable and comfortable 
 * added `js code` which currently allows writing raw text and viewing it right away containing `html, js, output` code block highlighting.
 * stable and minimal yet, modern `html, js, output` code block(s) highlighting.
 * minimal text wrapping for long notes.
+* Overall UI is much cleaner, wider and better.
 
 ## ⚠️ Notable Issues
 
 The current version has following issues:
 
-* Output/ View area size is a bit small and compact.
 * No dedicated `syntax-highlighting` for each code block content.
 
 ## 🚧 In development
