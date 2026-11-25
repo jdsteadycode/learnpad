@@ -39,6 +39,14 @@
     display: none !important;
 }
 
+/* for fading the element */
+.faded {
+    filter: blur(5px);
+    opacity: 0.9;
+    pointer-events: none;
+    transition: filter 0.15s, opacity 0.15s ease;
+}
+
 
 /* Shared container — sizing behavior lives on the content pre */
 .code-block-container {
