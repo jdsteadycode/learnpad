@@ -694,7 +694,7 @@ function generateElementWithAttributes(element, array) {
 // attach event(s) to note editor input element.
 attachElementEvent(noteEditorEl, "onblur", function() {
     
-    // proceed with toggling output process.
+    // proceed with output process.
     toggleOutput();
 
     // transition to reading mode.
@@ -702,20 +702,3 @@ attachElementEvent(noteEditorEl, "onblur", function() {
 
 });
 attachElementEvent(noteEditorEl, "onfocus", transitionToWritingMode);
-
-// when note editor element is focused in?
-// if(isElementFocused(noteEditorEl)) {
-
-//     // attach the fade-in class list to header element.
-//     toggleElementClasses([
-//         { "element": document.querySelector("header"), "class": "faded", "to": "add" },
-//     ]);
-// }
-// // otherwise
-// else {
-
-//     // remove the fade-in class list to header element.
-//     toggleElementClasses([
-//         { "element": document.querySelector("header"), "class": "faded", "to": "remove" },
-//     ]);
-// }
