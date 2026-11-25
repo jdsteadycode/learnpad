@@ -56,17 +56,17 @@ function attachElementEvent(element, event, callback) {
 
 // () -> transition to smog | blur effect. (writing mode)
 function transitionToWritingMode() {
-    // add faded class rule to header element.
+    // add the writing mode class to body element.
     toggleElementClasses([
-        { "element": document.querySelector("header"), "class": "faded", "to": "add" },
+        { "element": document.body, "class": "writing-mode", "to": "add" },
     ]);
 };
 
 // () -> transition to reading mode.
 function transitionToReadingMode() {
-    // remove faded class rule to header element.
+    // remove writing mode class rule to body element.
     toggleElementClasses([
-        { "element": document.querySelector("header"), "class": "faded", "to": "remove" },
+        { "element": document.body, "class": "writing-mode", "to": "remove" },
     ]);
 };
 
