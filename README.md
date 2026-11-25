@@ -23,7 +23,7 @@ The current version **v1.0.5** focuses on establishing a stable and comfortable 
 * updated `css code` by adding re-usable classes and some minimal styles for note editor output.
 * added `js code` which currently allows writing raw text and viewing it right away containing `html, js, output` code block highlighting.
 * stable and minimal yet, modern `html, js, output` code block(s) highlighting.
-* Added subtle smog, blur effect during writing mode for better and comfortable writing environment.
+* Added subtle smog, blur effect when transitioning to writing mode for better and comfortable writing environment.
 * Overall UI is much cleaner, smoother, comfy to work on.
 
 ## ⚠️ Notable Issues
