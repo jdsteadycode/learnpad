@@ -39,6 +39,14 @@
     display: none !important;
 }
 
+/* for enlarging the element */
+.focus-zoom {
+    transition: transform 0.4s ease;
+}
+/* when in writing mode */
+.writing-mode .focus-zoom {
+    transform: scale(1.02);
+}
 /* for fading the element */
 .fade-target {
     transition: filter 0.4s, opacity 0.4s ease;
