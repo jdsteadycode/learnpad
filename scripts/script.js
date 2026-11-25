@@ -54,6 +54,22 @@ function attachElementEvent(element, event, callback) {
     element[event] = callback;
 };
 
+// () -> whether element has focus (active)?
+/*
+i/p: [dom element]
+o/p: boolean (true || false)
+*/
+function isElementFocused(element = null) {
+    // when element isn't provided.
+    if(! element) return null;
+
+    // is cursor active?
+    let isCursorActive = (document.activeElement === element) && (document.hasFocus()); 
+
+    // get the boolean result
+    return isCursorActive;
+};
+
 // () -> to toggle output.
 /*
 * Transition from input mode -> output mode.
