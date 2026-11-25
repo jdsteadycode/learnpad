@@ -40,6 +40,10 @@
 }
 
 /* for fading the element */
+.fade-target {
+    transition: filter 0.4s, opacity 0.4s ease;
+}
+/* when in writing mode */
 .writing-mode .fade-target {
     filter: blur(5px);
     opacity: 0.9;
@@ -179,7 +183,6 @@ header {
     justify-content: space-between;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border-subtle);
-    transition: filter 0.4s, opacity 0.4s ease;
 }
 
 .logo-area {
