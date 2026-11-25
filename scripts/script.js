@@ -133,7 +133,7 @@ o/p: article reading view
 */
 function toggleInput() {
     // check log.
-    console.log("Toggle Input!");
+    // console.log("Toggle Input!");
 
     // from og data store - raw-text, update node editor Input element's value.
     noteEditorEl.value = dataStore["rawText"];
