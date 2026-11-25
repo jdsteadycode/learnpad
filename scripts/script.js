@@ -54,20 +54,20 @@ function attachElementEvent(element, event, callback) {
     element[event] = callback;
 };
 
-// () -> whether element has focus (active)?
-/*
-i/p: [dom element]
-o/p: boolean (true || false)
-*/
-function isElementFocused(element = null) {
-    // when element isn't provided.
-    if(! element) return null;
+// () -> transition to smog | blur effect. (writing mode)
+function transitionToWritingMode() {
+    // add faded class rule to header element.
+    toggleElementClasses([
+        { "element": document.querySelector("header"), "class": "faded", "to": "add" },
+    ]);
+};
 
-    // is cursor active?
-    let isCursorActive = (document.activeElement === element) && (document.hasFocus()); 
-
-    // get the boolean result
-    return isCursorActive;
+// () -> transition to reading mode.
+function transitionToReadingMode() {
+    // remove faded class rule to header element.
+    toggleElementClasses([
+        { "element": document.querySelector("header"), "class": "faded", "to": "remove" },
+    ]);
 };
 
 // () -> to toggle output.
@@ -86,8 +86,16 @@ function toggleOutput() {
     // get the outcome after parsing of raw text to various steps.
     const result = parseRawText(dataStore["rawText"], getIdentifiedBlockBoundaries, getNewLineStr, generateUpdatedBoundaries, generateStructuredArray);
 
+    // when info
+    if (result["info"]) {
+        // simply show the error in console.
+        console.log(result["info"]);
+
+        // simply add the normal whitespace as in array as fallback
+        dataStore.generatedNotesArr = [" "];
+    }
     // when error
-    if (result["error"]) {
+    else if (result["error"]) {
         // simply show the error in console.
         console.error(result["error"]);
 
@@ -125,7 +133,7 @@ o/p: article reading view
 */
 function toggleInput() {
     // check log.
-    // console.log("Toggle Input!");
+    console.log("Toggle Input!");
 
     // from og data store - raw-text, update node editor Input element's value.
     noteEditorEl.value = dataStore["rawText"];
@@ -220,12 +228,17 @@ function getIdentifiedBlockBoundaries(initialSplittedArray = []) {
 
 // () -> parse the raw notes text and do processing and structure it and get it in final result
 /*
-* o/p: either {"error": "message"} or {"data": [..]}
+* o/p: either {"error": "message" | "info": "message"} or {"data": [..]}
 */
 function parseRawText(rawTextInput, identifierCallback, getNewLineStrCallback, boundaryDataUpdaterCallback, getStructuredArrCallback) {
-    // when inputs are not provided properly?
-    if (!rawTextInput || !identifierCallback || !getNewLineStrCallback || !boundaryDataUpdaterCallback || !getStructuredArrCallback) {
-        return { "error": "Inputs are not provided properly or missing!" };
+
+    // when raw text input is not provided properly
+    if (! rawTextInput) {
+        return { "info": "raw text is not provided properly or missing!"};
+    }
+    // when inputs callbacks are not provided properly?
+    else if (!identifierCallback || !getNewLineStrCallback || !boundaryDataUpdaterCallback || !getStructuredArrCallback) {
+        return { "error": "callbacks are not provided properly or missing!" };
     }
     // when type of inputs are invalid?
     else if (typeof (rawTextInput) !== "string" || typeof (identifierCallback) !== "function" || typeof (getNewLineStrCallback) !== "function" || typeof (boundaryDataUpdaterCallback) !== "function" || typeof (getStructuredArrCallback) !== "function") {
@@ -678,5 +691,31 @@ function generateElementWithAttributes(element, array) {
 };
 
 
-// attach event to note editor input element.
-attachElementEvent(noteEditorEl, "onblur", toggleOutput);
+// attach event(s) to note editor input element.
+attachElementEvent(noteEditorEl, "onblur", function() {
+    
+    // proceed with toggling output process.
+    toggleOutput();
+
+    // transition to reading mode.
+    transitionToReadingMode();
+
+});
+attachElementEvent(noteEditorEl, "onfocus", transitionToWritingMode);
+
+// when note editor element is focused in?
+// if(isElementFocused(noteEditorEl)) {
+
+//     // attach the fade-in class list to header element.
+//     toggleElementClasses([
+//         { "element": document.querySelector("header"), "class": "faded", "to": "add" },
+//     ]);
+// }
+// // otherwise
+// else {
+
+//     // remove the fade-in class list to header element.
+//     toggleElementClasses([
+//         { "element": document.querySelector("header"), "class": "faded", "to": "remove" },
+//     ]);
+// }
