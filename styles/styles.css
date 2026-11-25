@@ -39,10 +39,6 @@
     display: none !important;
 }
 
-/* for enlarging the element */
-.focus-zoom {
-    transition: transform 0.4s ease;
-}
 /* when in writing mode */
 .writing-mode .focus-zoom {
     transform: scale(1.02);
@@ -241,7 +237,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.4s ease;
 }
 
 .editor-wrapper:focus-within {
